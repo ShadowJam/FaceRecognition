@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Registered People</h2>
+
+    <div class="row">
+        {% for person in people %}
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">{{ person.id }}</h5>
+                        <form method="POST" action="{{ url_for('delete_person', person_id=person.id) }}"
+                              onsubmit="return confirm('Delete {{ person.id }} and all their images?')">
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="bi bi-trash"></i> Delete Person
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for image in person.images %}
+                        <div class="col-md-6 mb-3">
+                            <div class="border p-2">
+                                <img src="{{ url_for('uploaded_photo', filename=person.id + '/' + image.name) }}"
+                                     class="img-fluid rounded">
+                                <form method="POST"
+                                      action="{{ url_for('delete_image', person_id=person.id, image_name=image.name) }}"
+                                      class="mt-2 text-center">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm"
+                                            onclick="return confirm('Delete this image?')">
+                                        <i class="bi bi-trash"></i> Delete Image
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-2 text-muted">
+                        Total images: {{ person.count }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

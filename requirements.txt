@@ -1,0 +1,18 @@
+# Основные зависимости
+flask
+opencv-python
+numpy
+python-dotenv
+werkzeug
+
+# Нейросети для лиц
+torch
+torchvision
+facenet-pytorch
+norfair
+
+# Дополнительные обработчики
+scipy
+pillow
+tqdm  # Для визуализации прогресса
+requests
