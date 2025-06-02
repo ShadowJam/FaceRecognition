@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Analysis Report</h2>
+
+    <div class="card mt-3">
+        <div class="card-header">
+            <h4>Summary</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>Video:</strong> {{ report.analysis_info.video_source }}</p>
+            <p><strong>Start:</strong> {{ report.analysis_info.start_time or 'N/A' }}</p>
+            <p><strong>End:</strong> {{ report.analysis_info.end_time or 'N/A' }}</p>
+            <p><strong>Frames processed:</strong> {{ report.analysis_info.processed_frames }}/{{ report.analysis_info.total_frames }}</p>
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-header">
+            <h4>Recognized People ({{ report.recognized|length }})</h4>
+        </div>
+        <div class="card-body">
+            {% if report.recognized %}
+                {% for person_id, data in report.recognized.items() %}
+                <div class="border-bottom pb-3 mb-3">
+                    <h5>{{ person_id }}</h5>
+                    <p>Detections: {{ data.count }}</p>
+                    <p>First seen: {{ data.first_seen or 'N/A' }}</p>
+                    <p>Last seen: {{ data.last_seen or 'N/A' }}</p>
+                    <p>Max confidence: {{ "%.2f"|format(data.max_confidence) }}</p>
+
+                    {% if data.sample_images %}
+                    <div class="mt-2">
+                        <h6>Sample images:</h6>
+                        <div class="d-flex">
+                            {% for img_data in data.sample_images %}
+                            <img src="data:image/jpeg;base64,{{ img_data }}"
+                                 class="img-thumbnail mr-2" style="height: 100px;">
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No recognized people</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-header">
+            <h4>Unrecognized Faces ({{ report.unrecognized|length }})</h4>
+        </div>
+        <div class="card-body">
+            {% if report.unrecognized %}
+                <div class="row">
+                    {% for item in report.unrecognized %}
+                    <div class="col-md-4 mb-3">
+                        <div class="border p-2">
+                            {% if item.image %}
+                            <img src="data:image/jpeg;base64,{{ item.image }}"
+                                 class="img-thumbnail w-100 mb-2">
+                            {% endif %}
+                            <p>Time: {{ item.timestamp or 'N/A' }}</p>
+                            <p>Confidence: {{ "%.2f"|format(item.confidence) }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No unrecognized faces</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

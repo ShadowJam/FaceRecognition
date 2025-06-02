@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+  input.pass {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: 7px;
+  }
+  input.login {
+    margin-top: 20px;
+  }
+</style>
+<body>
+<div class="text-center mb-4">
+  <h2>Login</h2>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, msg in messages %}
+      <p style="color:red;">{{ msg }}</p>
+    {% endfor %}
+  {% endwith %}
+  <form method="POST">
+    <label>Login: <input class="login" type="text" name="username"></label><br>
+    <label>Pass: <input class="pass" type="password" name="password"></label><br>
+    <button type="submit">Enter</button>
+  </form>
+  </div>
+</body>
+{% endblock %}

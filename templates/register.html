@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>Register New Person</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="person_id" class="form-label">Person ID</label>
+                        <input type="text" class="form-control" id="person_id" name="person_id" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="photos" class="form-label">Upload Photos (3-5 images)</label>
+                        <input class="form-control" type="file" id="photos" name="photos" multiple required accept="image/*">
+                        <div class="form-text">Please upload clear frontal photos in good lighting</div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

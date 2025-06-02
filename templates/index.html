@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="text-center mb-4">
+            <h1>Face Recognition System</h1>
+            <p class="lead">AI-powered face detection and recognition</p>
+        </div>
+
+        {% if has_data %}
+        <div class="alert alert-success text-center">
+            <h4><i class="bi bi-check-circle"></i> Data Loaded</h4>
+            <p>System has {{ known_faces_count }} registered faces</p>
+        </div>
+        {% else %}
+        <div class="alert alert-warning text-center">
+            <h4><i class="bi bi-exclamation-triangle"></i> No Data Available</h4>
+            <p>To get started, please register people manually</p>
+            <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg mt-3">
+                <i class="bi bi-person-plus"></i> Register Person
+            </a>
+        </div>
+        {% endif %}
+
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Registration</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-action">
+                            <i class="bi bi-person-plus"></i> Register Person
+                        </a>
+                        <p class="mt-2">Add new people to the database</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Analysis</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <a href="{{ url_for('video') }}" class="btn btn-success btn-action {% if not has_data %}disabled{% endif %}">
+                            <i class="bi bi-camera-video"></i> Start Analysis
+                        </a>
+                        <p class="mt-2">Process video streams</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Reports</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <a href="{{ url_for('reports') }}" class="btn btn-info btn-action {% if not has_data %}disabled{% endif %}">
+                            <i class="bi bi-graph-up"></i> View Reports
+                        </a>
+                        <p class="mt-2">See detection statistics</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>View People</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <a href="{{ url_for('view_people') }}" class="btn btn-info btn-action">
+                            <i class="bi bi-people"></i> View Registered
+                        </a>
+                        <p class="mt-2">Browse all registered people</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if video_files %}
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5>Available Videos</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for video in video_files %}
+                    <div class="col-md-6 mb-3">
+                        <div class="video-container">
+                            <video width="100%" controls>
+                                <source src="{{ url_for('static', filename='uploads/video/' + video.name) }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        <form method="POST" action="{{ url_for('start_analysis') }}" class="mt-2">
+                            <input type="hidden" name="video_source" value="{{ video.name }}">
+                            <button type="submit" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-play-circle"></i> Analyze This Video
+                            </button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5>Upload New Video</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('upload_video') }}" enctype="multipart/form-data">
+                    <div class="input-group">
+                        <input type="file" class="form-control" name="video" accept="video/*" required>
+                        <button class="btn btn-primary" type="submit">
+                            <i class="bi bi-upload"></i> Upload
+                        </button>
+                    </div>
+                    <small class="text-muted">Supported formats: MP4, AVI, MOV</small>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

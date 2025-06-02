@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Video Analysis</h2>
+
+    {% if video_files %}
+    <div class="list-group mt-3">
+        {% for video in video_files %}
+        <div class="list-group-item">
+            <h5>{{ video.name }}</h5>
+            <form method="POST" action="{{ url_for('start_analysis') }}">
+                <input type="hidden" name="video_source" value="{{ video.name }}">
+                <button type="submit" class="btn btn-primary">Analyze</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-warning">No videos available</div>
+    {% endif %}
+</div>
+{% endblock %}

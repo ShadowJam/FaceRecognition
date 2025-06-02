@@ -1,0 +1,20 @@
+FaceRec/
+│── app.py                 # Основной Flask сервер
+│── config.py              # Конфигурационные параметры
+│── face_identifier.py     # Логика идентификации лиц
+│── video_analyzer.py      # Обработка видео потока
+│── requirements.txt       # Зависимости
+│
+├── static/                # Статические файлы (CSS/JS)
+│   └── styles.css
+│
+├── templates/             # HTML шаблоны
+│   ├── base.html          # Базовый шаблон
+│   ├── index.html         # Главная страница
+│   ├── register.html      # Страница регистрации
+│   ├── reports.html       # Отчеты
+│   └── video.html         # Просмотр видеоанализа
+│
+├── known_faces/           # База известных лиц
+├── logs/                  # Логи идентификации
+└── uploads/               # Загруженные видео
